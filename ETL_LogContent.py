@@ -150,3 +150,13 @@ def main_task(start_date,end_date,path,save_path):
     print('Importing data to MySQL completely')
     print('----------------------')        
     return print('Task run successfully')
+
+# Enter 'Path' containing data folder
+path = 'C:\\Nguyễn Minh Khôi - EEC01\\study_data_DE\\Big Data\\CLass 4 - ETL Pipeline\\log_content(short)\\'
+# Enter start date and end date by according to syntax day = {yyyymmdd}
+start_date = '20220401'
+end_date = '20220405'
+# Enter 'save_path' storing data passed ETL process
+save_path = 'C:\\Nguyễn Minh Khôi - EEC01\\study_data_DE\\Big Data\\CLass 4 - ETL Pipeline\\ETL_LogContent\\Clean_data.csv'
+# Run to begin ETL process
+main_task(start_date,end_date,path,save_path)
