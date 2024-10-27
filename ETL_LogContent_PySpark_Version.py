@@ -16,6 +16,7 @@ def date_transform(start_date,end_date):
 
 # Loading data based on the request time series
 def data_extract(day_list,path):
+    from pyspark.sql.types import StructType
     df = spark.read.json(path + day_list[0] + '.json')
     df = df.withColumn('Date', lit(datetime.strptime(day_list[0], '%Y%m%d')))
     print('Processed completed {}'.format(day_list[0]))
@@ -78,9 +79,9 @@ def data_transform(df):
     print('Caculating the customer taste')
     print('----------------------')
     # Caculate the customer activeness
-    contract_counts = df.groupBy('Contract').agg(count('Contract').alias('Contract_count'))
-    result = result.join(contract_counts, 'Contract', 'left') \
-    .withColumn('customer_activeness', when(col('Contract_count') > 4, 'high').otherwise('low'))
+    log_counts = df.groupBy('Contract').agg(count('Contract').alias('Log_count'))
+    result = result.join(log_counts, 'Contract', 'left') \
+    .withColumn('customer_activeness', when(col('Log_count') > 4, 'high').otherwise('low'))
     return(result)
 
 # Loading Data to CSV
@@ -90,7 +91,40 @@ def data_load(result,save_path):
     result.write.csv(save_path,header = True)
 
 # Importing ETL data to MySQL
-
+def import_to_mysql(result):
+    from pyspark.sql.types import StructType
+ # Flatten struct columns if they exist
+    for field in result.schema.fields:
+        if isinstance(field.dataType, StructType):
+            # Lấy tất cả các trường con từ struct
+            for subfield in field.dataType.fields:
+                column_name = f"{field.name}_{subfield.name}"
+                result = result.withColumn(column_name, col(f"{field.name}.{subfield.name}"))
+            # Drop cột struct gốc
+            result = result.drop(field.name)
+    # MySQL connection details
+    user = 'root'  # Replace with your MySQL username
+    password = ''  # Replace with your MySQL password
+    host = 'localhost'  # Your MySQL host
+    port = '3306'  # Default MySQL port
+    database = 'etl_data'  # The database name
+    table = 'LogContent_ETL_data'  # Table name
+    # MySQL connection properties
+    mysql_properties = {
+        'driver': 'com.mysql.cj.jdbc.Driver',
+        'user': user,
+        'password': password,
+        'url': f'jdbc:mysql://{host}:{port}/{database}'}
+    # Write DataFrame to MySQL
+    result.write \
+        .mode('overwrite') \
+        .format('jdbc') \
+        .option('driver', mysql_properties['driver']) \
+        .option('url', mysql_properties['url']) \
+        .option('dbtable', table) \
+        .option('user', mysql_properties['user']) \
+        .option('password', mysql_properties['password']) \
+        .save()
 
 # ETL Process
 def main_task(start_date,end_date,path,save_path):
@@ -128,7 +162,7 @@ def main_task(start_date,end_date,path,save_path):
 path = 'C:\\Nguyễn Minh Khôi - EEC01\\study_data_DE\\Big Data\\CLass 4 - ETL Pipeline\\log_content(short)\\'
 # Enter start date and end date by according to syntax day = {yyyymmdd}
 start_date = '20220401'
-end_date = '20220410'
+end_date = '20220430'
 # Enter 'save_path' storing data passed ETL process
 save_path = 'C:\\Nguyễn Minh Khôi - EEC01\\study_data_DE\\Big Data\\CLass 4 - ETL Pipeline\\ETL_LogContent\\Clean_data.csv'
 
