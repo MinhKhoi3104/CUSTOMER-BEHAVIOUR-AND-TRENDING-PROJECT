@@ -111,8 +111,8 @@ path = 'C:\\Nguyễn Minh Khôi - EEC01\\study_data_DE\\Big Data\\Class 7 - Fina
 # Enter the start date in June
 start_date_6 = '20220601'
 # Enter the end date in June
-end_date_6 = '20220605'
+end_date_6 = '20220614'
 # Enter the start date in July
 start_date_7 = '20220701'
 # Enter the end date in July
-end_date_7 = '20220705'
+end_date_7 = '20220714'
