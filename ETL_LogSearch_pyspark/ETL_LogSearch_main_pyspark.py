@@ -88,7 +88,7 @@ def import_to_mysql(data):
     password = ''  # Replace with your MySQL password
     host = 'localhost'  # Your MySQL host
     port = '3306'  # Default MySQL port
-    database = 'log_search'  # The database name
+    database = 'customer360_pipeline'  # The database name
     table = 'LogSearch_Data_Final'  # Table name
     # MySQL connection properties
     mysql_properties = {

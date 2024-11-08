@@ -107,7 +107,7 @@ def import_to_mysql(result):
     password = ''  # Replace with your MySQL password
     host = 'localhost'  # Your MySQL host
     port = '3306'  # Default MySQL port
-    database = 'etl_data'  # The database name
+    database = 'customer360_pipeline'  # The database name
     table = 'LogContent_ETL_data'  # Table name
     # MySQL connection properties
     mysql_properties = {
