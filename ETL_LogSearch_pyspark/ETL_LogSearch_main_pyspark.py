@@ -109,7 +109,7 @@ def import_to_mysql(data):
     return print('Loading data to MySQL completely')
 
 # Main Task
-def main_task(path,start_date_6,end_date_6,start_date_7,end_date_7):
+def main_task(path,start_date_6,end_date_6,start_date_7,end_date_7,category_path):
     print('----------------------')
     print('Transforming date')
     day_list = date_transform(start_date_6,end_date_6,start_date_7,end_date_7)
