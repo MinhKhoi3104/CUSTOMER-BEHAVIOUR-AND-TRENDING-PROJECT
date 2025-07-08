@@ -4,4 +4,5 @@
 - Extract Data From DataLake, then transform data using PySpark, Pivot, Window Function to get the most activity such as search, watch, etc of customer, then load data to SQL database
 - Then connect the SQL database to Power BI for visualization, and additionally use basic DAX codes to calculate further metrics.
 - Finally, write a report for the entire project.
+  ![Customer behaviors and trending analysis](https://github.com/user-attachments/assets/a9d945a5-9efc-44a5-a477-f62c5c51fb45)
 
